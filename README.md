@@ -1,4 +1,4 @@
-S3Share
+S3Link
 =======
 
 Uploads a file up to Amazon's S3 Service, and provides a time limited URL to
@@ -13,7 +13,7 @@ Options:
 
   --secret-key    \<key\>     [ENV: AMAZON\_SECRET\_ACCESS\_KEY] -- Amazon provided secret key
 
-  --bucket        \<name\>   [ENV: S3SHARE\_BUCKET\_NAME]      -- Bucket to store the uploaded file
+  --bucket        \<name\>   [ENV: S3Link\_BUCKET\_NAME]      -- Bucket to store the uploaded file
 
   --expires-in    \<hours\>  [default: 24]                   -- How long the URL is valid for.
 

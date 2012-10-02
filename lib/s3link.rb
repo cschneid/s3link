@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'aws/s3'
 
-module S3Share
+module S3Link
   class CmdLineArgsError < RuntimeError; end
 
   class Main
@@ -79,7 +79,7 @@ module S3Share
     end
 
     def bucket_name
-      @options[:bucket] || ENV["S3SHARE_BUCKET_NAME"]
+      @options[:bucket] || ENV["S3LINK_BUCKET_NAME"]
     end
 
     def generate_url
@@ -109,7 +109,7 @@ Several options may be set via environment variables for ease of use.
 Options:
   --access-key    <key>    [ENV: AMAZON_ACCESS_KEY_ID]     -- Amazon provided access key
   --secret-key    <key     [ENV: AMAZON_SECRET_ACCESS_KEY] -- Amazon provided secret key
-  --bucket        <name>   [ENV: S3SHARE_BUCKET_NAME]      -- Bucket to store the uploaded file
+  --bucket        <name>   [ENV: S3LINK_BUCKET_NAME]      -- Bucket to store the uploaded file
   --expires-in    <hours>  [default: 24]                   -- How long the URL is valid for.
   --never-expire                                           -- Never expire the URL. If both 
                                                               expires commands are set, 
@@ -130,6 +130,6 @@ destroys something.  Don't destroy anything please.
 end
 
 if __FILE__ == $0
-  S3Share::Main.new.run_from_cmd_line
+  S3Link::Main.new.run_from_cmd_line
 end
 
