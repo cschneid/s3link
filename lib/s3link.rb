@@ -33,7 +33,7 @@ module S3Link
       @options[:silent] == ! $ARGV.include?("--silent")    
 
       if $ARGV.include?("--access-key")
-        @options[:access_key] = next_arg_after("--secret-key")
+        @options[:access_key] = next_arg_after("--access-key")
       end
 
       if $ARGV.include?("--secret-key")
