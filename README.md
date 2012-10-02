@@ -13,7 +13,7 @@ Options:
 
   --secret-key    \<key\>     [ENV: AMAZON\_SECRET\_ACCESS\_KEY] -- Amazon provided secret key
 
-  --bucket        \<name\>   [ENV: S3Link\_BUCKET\_NAME]      -- Bucket to store the uploaded file
+  --bucket        \<name\>   [ENV: S3LINK\_BUCKET\_NAME]      -- Bucket to store the uploaded file
 
   --expires-in    \<hours\>  [default: 24]                   -- How long the URL is valid for.
 
