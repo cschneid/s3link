@@ -1,55 +1,11 @@
 require 'rubygems'
 require 'aws/s3'
 
+require 'usage'
+require 'command_line_parser'
+
 module S3Link
   class CmdLineArgsError < RuntimeError; end
-
-  class CommandLineParser
-    attr_accessor :args
-
-    def initialize(args)
-      @args = args
-    end
-
-    def parse
-      options = {}
-
-      Usage.new if @args.include?("--help") || @args.include?("--help") || @args.length == 0
-
-      options[:silent] == ! @args.include?("--silent")    
-
-      if @args.include?("--access-key")
-        options[:access_key] = next_arg_after("--access-key")
-      end
-
-      if @args.include?("--secret-key")
-        options[:access_key] = next_arg_after("--secret-key")
-      end
-
-      if @args.include?("--bucket")
-        options[:bucket] = next_arg_after("--bucket")
-      end
-
-      if @args.include?("--expires-in")
-        options[:expires_in] = next_arg_after("--expires-in")
-      end
-
-      if @args.include?("--never-expire")
-        options[:never_expire] = true
-      end
-
-      # Last arg has to be filename
-      options[:filename] = @args[-1]
-
-      return options
-    end
-
-    def next_arg_after(key)
-      index = @args.index(key)
-      raise CmdLineArgsError if @args.length <= index
-      @args[index + 1]
-    end
-  end
 
   class Main
     def initialize
@@ -109,37 +65,6 @@ module S3Link
         # 24 hours default
         {:expires_in => 24 * 60 * 60}
       end
-    end
-
-  end
-
-  class Usage
-    def initialize(msg=nil)
-      puts msg if msg
-      puts <<-EOF 
-Uploads a file up to Amazon's S3 Service, and provides a time limited URL to access.  
-
-Several options may be set via environment variables for ease of use.
-
-Options:
-  --access-key    <key>    [ENV: AMAZON_ACCESS_KEY_ID]     -- Amazon provided access key
-  --secret-key    <key     [ENV: AMAZON_SECRET_ACCESS_KEY] -- Amazon provided secret key
-  --bucket        <name>   [ENV: S3LINK_BUCKET_NAME]      -- Bucket to store the uploaded file
-  --expires-in    <hours>  [default: 24]                   -- How long the URL is valid for.
-  --never-expire                                           -- Never expire the URL. If both 
-                                                              expires commands are set, 
-                                                              --expires-in will win.
-  --silent                                                 -- Quiet mode outputs ONLY the url
-
-NOTE: This tool DOES NOT ever remove files from S3. Manually using the web
-interface, or the s3cmd tool to clean out your bucket is advised.
-
-WARNING: This tool will just silently overwrite a file that is already
-present. This is good to replace files with new versions, but bad if it
-destroys something.  Don't destroy anything please.
-
-      EOF
-      exit(1)
     end
   end
 end
