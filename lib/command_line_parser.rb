@@ -11,14 +11,14 @@ module S3Link
 
       Usage.new if @args.include?("--help") || @args.include?("--help") || @args.length == 0
 
-      options[:silent] == ! @args.include?("--silent")
+      options[:silent] = @args.include?("--silent")
 
       if @args.include?("--access-key")
         options[:access_key] = next_arg_after("--access-key")
       end
 
       if @args.include?("--secret-key")
-        options[:access_key] = next_arg_after("--secret-key")
+        options[:secret_key] = next_arg_after("--secret-key")
       end
 
       if @args.include?("--bucket")
