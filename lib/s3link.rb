@@ -129,7 +129,3 @@ destroys something.  Don't destroy anything please.
   end
 end
 
-if __FILE__ == $0
-  S3Link::Main.new.run_from_cmd_line
-end
-

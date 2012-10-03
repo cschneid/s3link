@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 's3link'
+
+S3Link::Main.new.run_from_cmd_line
+
