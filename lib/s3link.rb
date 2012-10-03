@@ -4,16 +4,63 @@ require 'aws/s3'
 module S3Link
   class CmdLineArgsError < RuntimeError; end
 
+  class CommandLineParser
+    attr_accessor :args
+
+    def initialize(args)
+      @args = args
+    end
+
+    def parse
+      options = {}
+
+      Usage.new if @args.include?("--help") || @args.include?("--help") || @args.length == 0
+
+      options[:silent] == ! @args.include?("--silent")    
+
+      if @args.include?("--access-key")
+        options[:access_key] = next_arg_after("--access-key")
+      end
+
+      if @args.include?("--secret-key")
+        options[:access_key] = next_arg_after("--secret-key")
+      end
+
+      if @args.include?("--bucket")
+        options[:bucket] = next_arg_after("--bucket")
+      end
+
+      if @args.include?("--expires-in")
+        options[:expires_in] = next_arg_after("--expires-in")
+      end
+
+      if @args.include?("--never-expire")
+        options[:never_expire] = true
+      end
+
+      # Last arg has to be filename
+      options[:filename] = @args[-1]
+
+      return options
+    end
+
+    def next_arg_after(key)
+      index = @args.index(key)
+      raise CmdLineArgsError if @args.length <= index
+      @args[index + 1]
+    end
+  end
+
   class Main
     def initialize
       @options = {}
     end
 
     def run_from_cmd_line
-      begin
-        parse_cmd_line
+      @options = begin
+        S3Link::CommandLineParser.new($ARGV).parse
       rescue CmdLineArgsError
-        usage
+        Usage.new
       end
 
       puts "Establishing Connection" unless @options[:silent]
@@ -25,41 +72,6 @@ module S3Link
       url = generate_url 
       print "URL: " unless @options[:silent]
       puts "#{url}"
-    end
-
-    def parse_cmd_line
-      usage if $ARGV.include?("--help") || $ARGV.include?("--help") || $ARGV.length == 0
-
-      @options[:silent] == ! $ARGV.include?("--silent")    
-
-      if $ARGV.include?("--access-key")
-        @options[:access_key] = next_arg_after("--access-key")
-      end
-
-      if $ARGV.include?("--secret-key")
-        @options[:access_key] = next_arg_after("--secret-key")
-      end
-
-      if $ARGV.include?("--bucket")
-        @options[:bucket] = next_arg_after("--bucket")
-      end
-
-      if $ARGV.include?("--expires-in")
-        @options[:expires_in] = next_arg_after("--expires-in")
-      end
-
-      if $ARGV.include?("--never-expire")
-        @options[:never_expire] = true
-      end
-
-      # Last arg has to be filename
-      @options[:filename] = $ARGV[-1]
-    end
-
-    def next_arg_after(key)
-      index = $ARGV.index(key)
-      raise CmdLineArgsError if $ARGV.length <= index
-      $ARGV[index + 1]
     end
 
     def establish_connection
@@ -99,7 +111,10 @@ module S3Link
       end
     end
 
-    def usage(msg=nil)
+  end
+
+  class Usage
+    def initialize(msg=nil)
       puts msg if msg
       puts <<-EOF 
 Uploads a file up to Amazon's S3 Service, and provides a time limited URL to access.  
