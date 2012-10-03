@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 's3link'
-  s.version     = '0.0.3'
+  s.version     = '0.0.4'
   s.date        = '2012-10-02'
   s.summary     = "Quick upload to S3, with time limited share URL"
   s.description = "Quick upload to S3, with time limited share URL"
