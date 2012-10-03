@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Chris Schneider"]
   s.email       = 'chris@christopher-schneider.com'
   s.files       = ["lib/s3link.rb"]
-  s.homepage    =
-    'http://rubygems.org/gems/s3link'
+  s.homepage    = 'http://rubygems.org/gems/s3link'
+  s.add_dependency('aws-s3', '>= 0.6.3')
 end
 
